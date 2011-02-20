@@ -29,10 +29,14 @@
 #ifndef SOBELEDGEDETECTIONRUNNER_H_
 #define SOBELEDGEDETECTIONRUNNER_H_
 
+#include <QObject>
 #include <QImage>
 #include <QRunnable>
 
-class LaserDetectionRunner: public QRunnable {
+#include "ScanLineData.h"
+
+class LaserDetectionRunner: public QObject, public QRunnable {
+Q_OBJECT
 public:
 	LaserDetectionRunner(QImage image);
 	virtual ~LaserDetectionRunner();
@@ -40,6 +44,9 @@ public:
 	virtual void run();
 
 	void setScanLine(QRgb *scanLine, int workingY);
+
+signals:
+	void completed(ScanLineData data, int workingY);
 
 private:
 	QImage image;

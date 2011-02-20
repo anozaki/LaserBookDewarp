@@ -30,6 +30,7 @@
 
 #include <math.h>
 
+#include "ScanLineData.h"
 #include "LaserDetectionRunner.h"
 
 LaserDetectionRunner::LaserDetectionRunner(QImage image) {
@@ -59,6 +60,11 @@ void LaserDetectionRunner::run() {
 		scanLine[x] = processPixel(x, workingY);
 
 		int g = qGreen(scanLine[x]);
+
+		if(scanLine[x] == qRgb(0,0,0)) {
+			continue;
+		}
+
 		if (x < w / 2) {
 			// left side
 			if (leftFound == false || leftFoundGreen < g) {
@@ -91,6 +97,14 @@ void LaserDetectionRunner::run() {
 			}
 		}
 	}
+
+	ScanLineData data;
+	data.setPointA(QVector2D(leftFoundX, workingY));
+	data.setPointAAvailable(leftFound);
+	data.setPointB(QVector2D(rightFoundX, workingY));
+	data.setPointBAvailable(leftFound);
+
+	completed(data, workingY);
 }
 
 /*

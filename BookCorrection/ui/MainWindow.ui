@@ -44,21 +44,21 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="ShowOriginalButton">
+       <widget class="QPushButton" name="showOriginalButton">
         <property name="text">
          <string>Original Image</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="ShowBlurredButton">
+       <widget class="QPushButton" name="showBlurredButton">
         <property name="text">
          <string>Blurred Image</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="showLaserButton">
         <property name="text">
          <string>Laser Detection</string>
         </property>

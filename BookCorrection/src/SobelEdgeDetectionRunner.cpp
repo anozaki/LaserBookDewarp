@@ -54,7 +54,6 @@ void SobelEdgeDetectionRunner::run() {
 	for (int x = 0; x < w; x++) {
 		scanLine[x] = processPixel(size, w, h, x, workingY);
 	}
-
 }
 
 QRgb SobelEdgeDetectionRunner::processPixel(int size, int w, int h, int x,

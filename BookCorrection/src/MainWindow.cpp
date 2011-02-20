@@ -37,6 +37,7 @@
 #include "EdgeDetection.h"
 #include "ui_MainWindow.h"
 #include "MainWindow.h"
+#include "HeightTable.h"
 
 const double PI = 3.141592;
 // algorithm took from wiki page
@@ -78,25 +79,63 @@ MainWindow::MainWindow(QMainWindow *parent) :
 	ui.setupUi(this);
 
 	connect(ui.actionOpen, SIGNAL(triggered()), SLOT(openImage()));
+	connect(ui.showOriginalButton, SIGNAL(clicked()), SLOT(showOriginal()));
+	connect(ui.showBlurredButton, SIGNAL(clicked()), SLOT(showBlurred()));
+	connect(ui.showLaserButton, SIGNAL(clicked()), SLOT(showLaser()));
+}
+
+void MainWindow::showOriginal() {
+	ui.processedImage->setPixmap(QPixmap::fromImage(original));
+}
+
+void MainWindow::showBlurred() {
+	ui.processedImage->setPixmap(QPixmap::fromImage(blurred));
+}
+
+void MainWindow::showLaser() {
+	ui.processedImage->setPixmap(QPixmap::fromImage(laser));
 }
 
 void MainWindow::openImage() {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"),
 			NULL, tr("Image (*.jpg *.jpeg *.png *.tif)"));
 
+	if (fileName.isEmpty()) {
+		return;
+	}
+
+	// TODO shouldn't be doing all this in one function...
 	QImage image(fileName);
+
+	HeightTable table(image.width(), image.height());
+
+	// find the distance we need to put the origin if our FOV is 45 degree.
+	int distance = (image.width() / 2) / tan(45.0f / 2);
+	printf("%d \n", distance);
+
+	table.setOrigin(QVector3D(0, 0, -distance));
+
+	// setting the location of the laser crossing point and its angle. (TODO did not verify the angle is calulated correctly).
+	table.setBaseDistance(QVector3D(0, 0, 1000), 45);
+	table.generate();
+
 	QTransform myTransform;
 	myTransform.rotate(90);
 	QImage rotated = image.transformed(myTransform);
+
+	original = rotated;
 
 	ConvolutionFilter filter(rotated);
 	QList<float> gMatrix = gaussianBlurKernel(3, 1);
 	filter.process(gMatrix, 3);
 
+	blurred = filter.getImage();
+
 	EdgeDetection edgeDetection(filter.getImage());
 	edgeDetection.process();
 
-	ui.processedImage->setPixmap(QPixmap::fromImage(edgeDetection.getImage()));
+	laser = edgeDetection.getImage();
 
+	showOriginal();
 }
 

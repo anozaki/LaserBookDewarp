@@ -40,11 +40,20 @@ Q_OBJECT
 public:
 	MainWindow(QMainWindow *parent = 0);
 
+protected slots:
+	void showOriginal();
+	void showBlurred();
+	void showLaser();
+
 private slots:
 void openImage();
 
 private:
 	Ui::MainWindow ui;
+
+	QImage original;
+	QImage blurred;
+	QImage laser;
 };
 
 #endif /* MAINWINDOW_H_ */
