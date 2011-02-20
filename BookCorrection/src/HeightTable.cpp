@@ -3,6 +3,27 @@
  *
  *  Created on: Feb 19, 2011
  *      Author: anozaki
+ *
+ * Copyright (C) 2011 by Akito Nozaki
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
  */
 
 #include <QVector>
@@ -31,10 +52,10 @@ void HeightTable::setBaseDistance(QVector3D base, qreal degree) {
 	qreal y = base.z() / tan(degree);
 
 	// we can always assume one edge along the base going across.
-	normalTop = getNormal(base, QVector3D(base.z(), 0, base.z()), QVector3D(
-			0, y, 0));
-	normalBottom = getNormal(base, QVector3D(base.z(), 0, base.z()),
-			QVector3D(0, -y, 0));
+	normalTop = getNormal(base, QVector3D(base.z(), 0, base.z()), QVector3D(0,
+			y, 0));
+	normalBottom = getNormal(base, QVector3D(base.z(), 0, base.z()), QVector3D(
+			0, -y, 0));
 }
 
 // generate the normal of the plane
@@ -61,7 +82,6 @@ int getPixel(qreal x, qreal x0, qreal x1) {
 	return ((x - x0) * y1 + (x1 - x) * y0) / (x1 - x0);
 }
 
-
 // TODO convert this to multi thread... This is some complex calculation, but should only needs to be done once.
 void HeightTable::generate() {
 	QVector3D normalToUse;
@@ -74,7 +94,7 @@ void HeightTable::generate() {
 	for (int y = 0; y < height; y++) {
 		int coordinateY = y - (height / 2);
 
-		if(coordinateY < 0) {
+		if (coordinateY < 0) {
 			normalToUse = normalBottom;
 		} else {
 			normalToUse = normalTop;
@@ -91,11 +111,11 @@ void HeightTable::generate() {
 			QVector3D intersect = origin + (t * (direction - origin));
 			data[x + (y * width)] = intersect;
 
-			if(intersect.z() > maxz) {
+			if (intersect.z() > maxz) {
 				maxz = intersect.z();
 			}
 
-			if(intersect.z() < minz) {
+			if (intersect.z() < minz) {
 				minz = intersect.z();
 			}
 		}
@@ -107,15 +127,15 @@ void HeightTable::generate() {
 	heightTable = data;
 }
 
-
 QImage HeightTable::asImage() {
 	QImage image(width, height, QImage::Format_RGB32);
 
-	for(int y = 0; y < height; y++) {
-		for(int x = 0; x < width; x++) {
-			int c = getPixel(heightTable[x + (y * width)].z(), minHeight, maxHeight);
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			int c = getPixel(heightTable[x + (y * width)].z(), minHeight,
+					maxHeight);
 
-			image.setPixel(x,y,qRgb(c,c,c));
+			image.setPixel(x, y, qRgb(c, c, c));
 		}
 	}
 
