@@ -65,13 +65,11 @@ QVector3D HeightTable::getNormal(QVector3D common, QVector3D pointA,
 	QVector3D u = pointA - common;
 	QVector3D v = pointB - common;
 
-	qreal nX = (u.y() * v.z()) - (u.z() * v.y());
-	qreal nY = (u.z() * v.x()) - (u.x() * v.z());
-	qreal nZ = (u.x() * v.y()) - (u.y() * v.x());
+//	qreal nX = (u.y() * v.z()) - (u.z() * v.y());
+//	qreal nY = (u.z() * v.x()) - (u.x() * v.z());
+//	qreal nZ = (u.x() * v.y()) - (u.y() * v.x());
 
-	QVector3D result = QVector3D(nX, nY, nZ).normalized();
-
-	return result;
+	return QVector3D::crossProduct(u, v).normalized();
 }
 
 // simple linear interpolation algorithm...
