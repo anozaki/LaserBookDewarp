@@ -98,13 +98,13 @@ void LaserDetectionRunner::run() {
 		}
 	}
 
-	ScanLineData data;
-	data.setPointA(QVector2D(leftFoundX, workingY));
-	data.setPointAAvailable(leftFound);
-	data.setPointB(QVector2D(rightFoundX, workingY));
-	data.setPointBAvailable(leftFound);
+//	ScanLineData data;
+//	data.setPointA(QVector2D(leftFoundX, workingY));
+//	data.setPointAAvailable(leftFound);
+//	data.setPointB(QVector2D(rightFoundX, workingY));
+//	data.setPointBAvailable(leftFound);
 
-	completed(data, workingY);
+//	emit completed(QVector2D(leftFoundX, workingY), leftFound, QVector2D(rightFoundX, workingY), leftFound, workingY);
 }
 
 /*

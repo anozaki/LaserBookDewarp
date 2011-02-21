@@ -29,9 +29,10 @@
 #ifndef SCANLINEDATA_H_
 #define SCANLINEDATA_H_
 
+#include <QObject>
 #include <QVector2D>
 
-class ScanLineData {
+class ScanLineData{
 public:
 	ScanLineData();
 	virtual ~ScanLineData();

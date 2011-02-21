@@ -61,9 +61,7 @@ void ConvolutionFilter::process(QList<float> &matrix, int radius) {
 		threadPool.start(runner);
 	}
 
-	while (threadPool.activeThreadCount() > 0) {
-		sleep(1);
-	}
+	threadPool.waitForDone();
 }
 
 QImage ConvolutionFilter::getImage() {

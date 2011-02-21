@@ -35,8 +35,7 @@
 
 #include "ScanLineData.h"
 
-class LaserDetectionRunner: public QObject, public QRunnable {
-Q_OBJECT
+class LaserDetectionRunner: public QRunnable {
 public:
 	LaserDetectionRunner(QImage image);
 	virtual ~LaserDetectionRunner();
@@ -44,9 +43,6 @@ public:
 	virtual void run();
 
 	void setScanLine(QRgb *scanLine, int workingY);
-
-signals:
-	void completed(ScanLineData data, int workingY);
 
 private:
 	QImage image;

@@ -31,6 +31,7 @@
 #include <QThreadPool>
 
 #include "EdgeDetection.h"
+#include "LaserDetectionRunner.h"
 #include "LaserDetectionHSVRunner.h"
 
 EdgeDetection::EdgeDetection(QImage original) {
@@ -52,13 +53,14 @@ void EdgeDetection::process() {
 //		LaserDetectionHSVRunner *runner = new LaserDetectionHSVRunner(original);
 		runner->setScanLine((QRgb*)image.scanLine(y),y);
 		runner->setAutoDelete(true);
+
 		threadPool.start(runner);
 	}
 
-	while(threadPool.activeThreadCount() > 0) {
-		sleep(1);
-	}
+	threadPool.waitForDone();
+}
 
+void EdgeDetection::scanLineComplete(QVector2D pointA, bool pointAAvailable, QVector2D pointB, bool pointBAvailable, int workingY) {
 }
 
 QImage EdgeDetection::getImage() {

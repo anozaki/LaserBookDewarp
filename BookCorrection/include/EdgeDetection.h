@@ -29,9 +29,14 @@
 #ifndef EDGEDETECTION_H_
 #define EDGEDETECTION_H_
 
+#include <QMap>
 #include <QImage>
+#include <QObject>
 
-class EdgeDetection {
+#include "ScanLineData.h"
+
+class EdgeDetection : public QObject {
+	Q_OBJECT
 public:
 	EdgeDetection(QImage original);
 	virtual ~EdgeDetection();
@@ -39,6 +44,10 @@ public:
 	void process();
 
 	QImage getImage();
+
+public slots:
+	void scanLineComplete(QVector2D pointA, bool pointAAvailable, QVector2D pointB, bool pointBAvailable, int workingY);
+
 private:
 	QImage original;
 	QImage image;

@@ -100,13 +100,6 @@ void LaserDetectionHSVRunner::run() {
 //		}
 	}
 
-	ScanLineData data;
-	data.setPointA(QVector2D(leftFoundX, workingY));
-	data.setPointAAvailable(leftFound);
-	data.setPointB(QVector2D(rightFoundX, workingY));
-	data.setPointBAvailable(leftFound);
-
-	completed(data, workingY);
 }
 
 const double PI = 3.141592;
