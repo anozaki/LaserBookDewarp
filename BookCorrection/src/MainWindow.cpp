@@ -94,7 +94,6 @@ void MainWindow::showBlurred() {
 
 void MainWindow::showLaser() {
 	ui.processedImage->setPixmap(QPixmap::fromImage(laser));
-	laser.save("laser.png");
 }
 
 void MainWindow::openImage() {
@@ -112,7 +111,7 @@ void MainWindow::openImage() {
 
 	// find the distance we need to put the origin if our FOV is 45 degree.
 	int distance = (image.width() / 2) / tan(45.0f / 2);
-	printf("%d \n", distance);
+//	printf("%d \n", distance);
 
 	table.setOrigin(QVector3D(0, 0, -distance));
 
@@ -136,6 +135,11 @@ void MainWindow::openImage() {
 	edgeDetection.process();
 
 	laser = edgeDetection.getImage();
+
+	myTransform.rotate(180);
+	original = original.transformed(myTransform);
+	blurred = blurred.transformed(myTransform);
+	laser = laser.transformed(myTransform);
 
 	showOriginal();
 }
