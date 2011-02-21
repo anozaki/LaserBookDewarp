@@ -26,8 +26,8 @@
  *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#ifndef LASERDETECTIONRUNNER_H_
+#define LASERDETECTIONRUNNER_H_
 
 #include <QObject>
 #include <QImage>
@@ -59,4 +59,4 @@ private:
 	QRgb processPixel(int x, int y);
 };
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+#endif /* LASERDETECTIONRUNNER_H_ */

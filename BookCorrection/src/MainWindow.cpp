@@ -94,6 +94,7 @@ void MainWindow::showBlurred() {
 
 void MainWindow::showLaser() {
 	ui.processedImage->setPixmap(QPixmap::fromImage(laser));
+	laser.save("laser.png");
 }
 
 void MainWindow::openImage() {

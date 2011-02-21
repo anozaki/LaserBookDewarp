@@ -1,8 +1,8 @@
 /*
- * EdgeDetection.cpp
+ * SobelEdgeDetectionRunner.h
  *
- *  Created on: Feb 17, 2011
- *      Author: anozaki
+ *  Created on: Feb 20, 2011
+ *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
  *
@@ -26,41 +26,37 @@
  *
  */
 
-#include <QList>
+#ifndef LASERDETECTIONHSVRUNNER_H_
+#define LASERDETECTIONHSVRUNNER_H_
+
+#include <QObject>
 #include <QImage>
-#include <QThreadPool>
+#include <QRunnable>
 
-#include "EdgeDetection.h"
-#include "LaserDetectionHSVRunner.h"
+#include "ScanLineData.h"
 
-EdgeDetection::EdgeDetection(QImage original) {
-	this->original = original;
-	image = QImage(original.width(), original.height(), QImage::Format_RGB32);
-}
+class LaserDetectionHSVRunner: public QObject, public QRunnable {
+Q_OBJECT
+public:
+	LaserDetectionHSVRunner(QImage image);
+	virtual ~LaserDetectionHSVRunner();
 
-EdgeDetection::~EdgeDetection() {
+	virtual void run();
 
-}
+	void setScanLine(QRgb *scanLine, int workingY);
 
-void EdgeDetection::process() {
+signals:
+	void completed(ScanLineData data, int workingY);
 
-	QThreadPool threadPool;
-	int height = image.height();
+private:
+	QImage image;
 
-	for (int y = 0; y < height; y++) {
-		LaserDetectionRunner *runner = new LaserDetectionRunner(original);
-//		LaserDetectionHSVRunner *runner = new LaserDetectionHSVRunner(original);
-		runner->setScanLine((QRgb*)image.scanLine(y),y);
-		runner->setAutoDelete(true);
-		threadPool.start(runner);
-	}
+	QRgb *scanLine;
+	int width;
+	int workingY;
 
-	while(threadPool.activeThreadCount() > 0) {
-		sleep(1);
-	}
+	void findPoint(QRgb scanLine[], int x, int width, int step);
+	QRgb processPixel(int x, int y);
+};
 
-}
-
-QImage EdgeDetection::getImage() {
-	return image;
-}
+#endif /* LASERDETECTIONHSVRUNNER_H_ */

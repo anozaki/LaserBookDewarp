@@ -14,7 +14,8 @@ HEADERS += include/MainWindow.h \
 	include/ConvolutionFilterRunner.h \
 	include/EdgeDetection.h \
 	include/SobelEdgeDetectionRunner.h \
-	include/laserDetectionRunner.h \
+	include/LaserDetectionRunner.h \
+	include/LaserDetectionHSVRunner.h \
 	include/ScanLineData.h \
 	include/HeightTable.h 
 
@@ -26,5 +27,6 @@ SOURCES += src/BookScanner.cpp \
 	src/EdgeDetection.cpp \
 	src/SobelEdgeDetectionRunner.cpp \
 	src/LaserDetectionRunner.cpp \
+	src/LaserDetectionHSVRunner.cpp \
 	src/ScanLineData.cpp \
 	src/HeightTable.cpp
