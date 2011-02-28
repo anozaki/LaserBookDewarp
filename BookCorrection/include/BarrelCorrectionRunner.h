@@ -1,7 +1,7 @@
 /*
- * SobelEdgeDetectionRunner.h
+ * BarrelCorrectionRunner.h
  *
- *  Created on: Feb 17, 2011
+ *  Created on: Feb 21, 2011
  *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
@@ -26,20 +26,26 @@
  *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#ifndef BARRELCORRECTIONRUNNER_H_
+#define BARRELCORRECTIONRUNNER_H_
 
+#include <QList>
+#include <QVector2D>
 #include <QImage>
 #include <QRunnable>
 
-class SobelEdgeDetectionRunner: public QRunnable {
+#include "BarrelCorrection.h"
+
+class BarrelCorrectionRunner : public QRunnable {
 public:
-	SobelEdgeDetectionRunner(QImage image);
-	virtual ~SobelEdgeDetectionRunner();
+	BarrelCorrectionRunner(const QImage &image, const QList<QVector2D> &translation);
+	virtual ~BarrelCorrectionRunner();
 
 	virtual void run();
 
 	void setScanLine(QRgb *scanLine, int workingY);
+
+	void setMethod(BarrelCorrection::Interpolation type);
 
 private:
 	QImage image;
@@ -47,8 +53,16 @@ private:
 	QRgb *scanLine;
 	int width;
 	int workingY;
+	QList<QVector2D> translation;
 
-	QRgb processPixel(int size, int w, int h, int x, int y);
+	BarrelCorrection::Interpolation interpolation;
+
+	void findPoint(QRgb scanLine[], int x, int width, int step);
+
+	QRgb processNNPixel(double x, double y);
+	QRgb processPixel(double x, double y);
+	QRgb processCubicPixel(double x, double y);
 };
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+
+#endif /* BARRELCORRECTIONRUNNER_H_ */

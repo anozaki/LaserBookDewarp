@@ -1,7 +1,7 @@
 /*
- * SobelEdgeDetectionRunner.h
+ * BarrelTranslationRunner.h
  *
- *  Created on: Feb 17, 2011
+ *  Created on: Feb 26, 2011
  *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
@@ -26,29 +26,32 @@
  *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#ifndef BARRELTRANSLATIONRUNNER_H_
+#define BARRELTRANSLATIONRUNNER_H_
 
-#include <QImage>
+#include <QList>
+#include <QVector2D>
 #include <QRunnable>
 
-class SobelEdgeDetectionRunner: public QRunnable {
+class BarrelTranslationRunner : public QRunnable {
 public:
-	SobelEdgeDetectionRunner(QImage image);
-	virtual ~SobelEdgeDetectionRunner();
+	BarrelTranslationRunner(int width, int height, int workingY);
+	virtual ~BarrelTranslationRunner();
+
+	void setDistortionParam(double k1, double k2, double k3, int scale);
 
 	virtual void run();
 
-	void setScanLine(QRgb *scanLine, int workingY);
-
+	void setList(QList<QVector2D> *translation);
 private:
-	QImage image;
-
-	QRgb *scanLine;
-	int width;
+	int width, height;
 	int workingY;
+	int scale;
 
-	QRgb processPixel(int size, int w, int h, int x, int y);
+	double k1, k2, k3;
+
+	QList<QVector2D> *translation;
+
 };
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+#endif /* BARRELTRANSLATIONRUNNER_H_ */

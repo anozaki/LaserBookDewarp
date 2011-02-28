@@ -2,7 +2,7 @@
  * EdgeDetection.h
  *
  *  Created on: Feb 17, 2011
- *      Author: anozaki
+ *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
  *

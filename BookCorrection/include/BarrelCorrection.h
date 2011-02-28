@@ -1,7 +1,7 @@
 /*
- * SobelEdgeDetectionRunner.h
+ * BarrelTraslationCaculator.h
  *
- *  Created on: Feb 17, 2011
+ *  Created on: Feb 26, 2011
  *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
@@ -26,29 +26,33 @@
  *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#ifndef BARRELTRASLATIONCACULATOR_H_
+#define BARRELTRASLATIONCACULATOR_H_
 
+#include <QList>
+#include <QVector2D>
 #include <QImage>
-#include <QRunnable>
 
-class SobelEdgeDetectionRunner: public QRunnable {
+class BarrelCorrection {
 public:
-	SobelEdgeDetectionRunner(QImage image);
-	virtual ~SobelEdgeDetectionRunner();
+	enum Interpolation { NearestNeighbor, Bilinear, Bicubic };
 
-	virtual void run();
+	BarrelCorrection();
+	virtual ~BarrelCorrection();
 
-	void setScanLine(QRgb *scanLine, int workingY);
+	void createTranslation(const QImage &image, double k1, double k2, double k3, int scale);
+
+	void createTranslation(int width, int height, double k1, double k2, double k3, int scale);
+
+	void fixImage(const QImage &original, BarrelCorrection::Interpolation method);
+
+	const QImage &getImage();
 
 private:
+	int width, height;
+	QList< QList<QVector2D>* > translation;
+
 	QImage image;
-
-	QRgb *scanLine;
-	int width;
-	int workingY;
-
-	QRgb processPixel(int size, int w, int h, int x, int y);
 };
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+#endif /* BARRELTRASLATIONCACULATOR_H_ */

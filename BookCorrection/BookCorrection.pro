@@ -5,9 +5,15 @@
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += ./include
+INCLUDEPATH += ./include /opt/local/include
+#LIBS += -L/opt/local/lib -lexif
 
-FORMS += ui/MainWindow.ui
+# doesn't seem to be working...
+#CONFIG += link_pkgconfig
+#PKGCONFIG += libexif
+
+FORMS += ui/MainWindow.ui \
+	ui/BarrelCorrectionWindow.ui
 
 HEADERS += include/MainWindow.h \
 	include/ConvolutionFilter.h \
@@ -17,7 +23,12 @@ HEADERS += include/MainWindow.h \
 	include/LaserDetectionRunner.h \
 	include/LaserDetectionHSVRunner.h \
 	include/ScanLineData.h \
-	include/HeightTable.h 
+	include/HeightTable.h \
+	include/BarrelCorrectionRunner.h \
+	include/BarrelCorrectionWindow.h \
+	include/BarrelCorrection.h \
+	include/BarrelTranslationRunner.h \
+	include/BarrelImageView.h
 
 # Input
 SOURCES += src/BookScanner.cpp \
@@ -29,4 +40,9 @@ SOURCES += src/BookScanner.cpp \
 	src/LaserDetectionRunner.cpp \
 	src/LaserDetectionHSVRunner.cpp \
 	src/ScanLineData.cpp \
-	src/HeightTable.cpp
+	src/HeightTable.cpp \
+	src/BarrelCorrectionRunner.cpp \
+	src/BarrelCorrectionWindow.cpp \
+	src/BarrelCorrection.cpp \
+	src/BarrelTranslationRunner.cpp \
+	src/BarrelImageView.cpp

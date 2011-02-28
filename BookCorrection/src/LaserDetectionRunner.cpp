@@ -56,8 +56,9 @@ void LaserDetectionRunner::run() {
 	int rightFoundGreen;
 	int rightFoundX = 0;
 
+	const QRgb *originalScanLine = (const QRgb *) image.scanLine(workingY);
 	for (int x = 0; x < w; x++) {
-		scanLine[x] = processPixel(x, workingY);
+		scanLine[x] = processPixel(x, originalScanLine);
 
 		int g = qGreen(scanLine[x]);
 
@@ -111,8 +112,8 @@ void LaserDetectionRunner::run() {
  * Makes sure the color we are looking at is green. This function also accounts for laser
  * that is too bright and blown the color out almost to white.
  */
-QRgb LaserDetectionRunner::processPixel(int x, int y) {
-	QRgb original = image.pixel(x, y);
+QRgb LaserDetectionRunner::processPixel(int x, const QRgb *originalScanLine) {
+	QRgb original = originalScanLine[x];
 
 	float r = qRed(original);
 	float g = qGreen(original);

@@ -1,7 +1,7 @@
 /*
- * SobelEdgeDetectionRunner.h
+ * BarrelImageView.h
  *
- *  Created on: Feb 17, 2011
+ *  Created on: Feb 26, 2011
  *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
@@ -26,29 +26,23 @@
  *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#ifndef BARRELIMAGEVIEW_H_
+#define BARRELIMAGEVIEW_H_
 
-#include <QImage>
-#include <QRunnable>
+#include <QLabel>
 
-class SobelEdgeDetectionRunner: public QRunnable {
+class BarrelImageView: public QLabel {
 public:
-	SobelEdgeDetectionRunner(QImage image);
-	virtual ~SobelEdgeDetectionRunner();
+	BarrelImageView();
+	virtual ~BarrelImageView();
 
-	virtual void run();
-
-	void setScanLine(QRgb *scanLine, int workingY);
+	void setValue(double k1, double k2, double k3, int scale);
+protected:
+	virtual void paintEvent(QPaintEvent *event);
 
 private:
-	QImage image;
-
-	QRgb *scanLine;
-	int width;
-	int workingY;
-
-	QRgb processPixel(int size, int w, int h, int x, int y);
+	double k1, k2, k3;
+	int scale;
 };
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+#endif /* BARRELIMAGEVIEW_H_ */

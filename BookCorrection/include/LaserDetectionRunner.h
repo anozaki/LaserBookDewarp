@@ -2,7 +2,7 @@
  * SobelEdgeDetectionRunner.h
  *
  *  Created on: Feb 17, 2011
- *      Author: anozaki
+ *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
  *
@@ -52,7 +52,7 @@ private:
 	int workingY;
 
 	void findPoint(QRgb scanLine[], int x, int width, int step);
-	QRgb processPixel(int x, int y);
+	QRgb processPixel(int x, const QRgb *originalScanLine);
 };
 
 #endif /* LASERDETECTIONRUNNER_H_ */

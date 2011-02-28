@@ -2,7 +2,7 @@
  * MainWindow.cpp
  *
  *  Created on: Feb 12, 2011
- *      Author: anozaki
+ *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
  *
@@ -33,6 +33,7 @@
 #include <QFileDialog>
 #include <QImage>
 
+#include "BarrelCorrectionWindow.h"
 #include "ConvolutionFilter.h"
 #include "EdgeDetection.h"
 #include "ui_MainWindow.h"
@@ -82,6 +83,7 @@ MainWindow::MainWindow(QMainWindow *parent) :
 	connect(ui.showOriginalButton, SIGNAL(clicked()), SLOT(showOriginal()));
 	connect(ui.showBlurredButton, SIGNAL(clicked()), SLOT(showBlurred()));
 	connect(ui.showLaserButton, SIGNAL(clicked()), SLOT(showLaser()));
+	connect(ui.barrelDistortionButton, SIGNAL(clicked()), SLOT(showBarrel()));
 }
 
 void MainWindow::showOriginal() {
@@ -94,6 +96,10 @@ void MainWindow::showBlurred() {
 
 void MainWindow::showLaser() {
 	ui.processedImage->setPixmap(QPixmap::fromImage(laser));
+}
+
+void MainWindow::showBarrel() {
+	correction.show();
 }
 
 void MainWindow::openImage() {

@@ -2,7 +2,7 @@
  * MainWindow.h
  *
  *  Created on: Feb 12, 2011
- *      Author: anozaki
+ *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
  *
@@ -33,6 +33,7 @@
 #include <QMainWindow>
 
 #include "ui_MainWindow.h"
+#include "BarrelCorrectionWindow.h"
 
 class MainWindow: public QMainWindow {
 Q_OBJECT
@@ -44,6 +45,7 @@ protected slots:
 	void showOriginal();
 	void showBlurred();
 	void showLaser();
+	void showBarrel();
 
 private slots:
 void openImage();
@@ -54,6 +56,8 @@ private:
 	QImage original;
 	QImage blurred;
 	QImage laser;
+
+	BarrelCorrectionWindow correction;
 };
 
 #endif /* MAINWINDOW_H_ */

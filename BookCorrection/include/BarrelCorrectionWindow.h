@@ -1,7 +1,7 @@
 /*
- * SobelEdgeDetectionRunner.h
+ * BarrelCorrectionWindow.h
  *
- *  Created on: Feb 17, 2011
+ *  Created on: Feb 26, 2011
  *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
@@ -26,29 +26,53 @@
  *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#ifndef BARRELCORRECTIONWINDOW_H_
+#define BARRELCORRECTIONWINDOW_H_
 
-#include <QImage>
-#include <QRunnable>
+#include <QObject>
+#include <QWidget>
+#include <QPainter>
 
-class SobelEdgeDetectionRunner: public QRunnable {
+#include "BarrelCorrection.h"
+#include "BarrelImageView.h"
+
+#include "ui_BarrelCorrectionWindow.h"
+
+class BarrelCorrectionWindow : public QWidget {
+	Q_OBJECT
 public:
-	SobelEdgeDetectionRunner(QImage image);
-	virtual ~SobelEdgeDetectionRunner();
+	BarrelCorrectionWindow(QWidget *parent = 0);
+	virtual ~BarrelCorrectionWindow();
 
-	virtual void run();
+protected:
 
-	void setScanLine(QRgb *scanLine, int workingY);
+private slots:
+	void k1SliderMoved(int);
+	void k2SliderMoved(int);
+	void k3SliderMoved(int);
+
+	void scaleSlider(int);
+
+	void k1ValueChanged(double);
+	void k2ValueChanged(double);
+	void k3ValueChanged(double);
+
+	void onOpenImage();
+	void onTestClicked();
 
 private:
+	Ui::BarrelCorrectionWindow ui;
+
 	QImage image;
+	QPainter painter;
 
-	QRgb *scanLine;
-	int width;
-	int workingY;
+	BarrelImageView imageArea;
+	BarrelImageView imageArea2;
 
-	QRgb processPixel(int size, int w, int h, int x, int y);
+	BarrelCorrection correction;
+
+	void setBarrelSetting();
+
 };
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+#endif /* BARRELCORRECTIONWINDOW_H_ */

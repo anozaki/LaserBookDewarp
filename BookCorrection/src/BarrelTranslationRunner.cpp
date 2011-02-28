@@ -1,7 +1,7 @@
 /*
- * SobelEdgeDetectionRunner.h
+ * BarrelTranslationRunner.cpp
  *
- *  Created on: Feb 17, 2011
+ *  Created on: Feb 26, 2011
  *      Author: Akito Nozaki
  *
  * Copyright (C) 2011 by Akito Nozaki
@@ -24,31 +24,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ *
  */
 
-#ifndef SOBELEDGEDETECTIONRUNNER_H_
-#define SOBELEDGEDETECTIONRUNNER_H_
+#include <math.h>
 
-#include <QImage>
-#include <QRunnable>
+#include "BarrelTranslationRunner.h"
 
-class SobelEdgeDetectionRunner: public QRunnable {
-public:
-	SobelEdgeDetectionRunner(QImage image);
-	virtual ~SobelEdgeDetectionRunner();
+BarrelTranslationRunner::BarrelTranslationRunner(int width, int height, int workingY) {
+	this->width = width;
+	this->height = height;
+	this->workingY = workingY;
+}
 
-	virtual void run();
+BarrelTranslationRunner::~BarrelTranslationRunner() {
+}
 
-	void setScanLine(QRgb *scanLine, int workingY);
+void BarrelTranslationRunner::setDistortionParam(double k1, double k2, double k3, int scale) {
+	this->k1 = k1;
+	this->k2 = k2;
+	this->k3 = k3;
 
-private:
-	QImage image;
+	this->scale = scale;
+}
 
-	QRgb *scanLine;
-	int width;
-	int workingY;
+void BarrelTranslationRunner::setList(QList<QVector2D> *translation) {
+	this->translation = translation;
+}
 
-	QRgb processPixel(int size, int w, int h, int x, int y);
-};
+void BarrelTranslationRunner::run() {
+	double xc = width / 2;
+	double yc = height / 2;
 
-#endif /* SOBELEDGEDETECTIONRUNNER_H_ */
+	int ySqr = (workingY - yc);
+	ySqr *= ySqr;
+
+	translation->clear();
+
+	int yu = workingY - yc;
+	for(int x = 0; x < width; x++) {
+		int xu = x - xc;
+		double r = sqrt(xu * xu + ySqr);
+
+		double s = scale / (1000 + (k1 * r) + (k2 * r * r) + (k3 * r * r * r));
+
+		float xd = xu * s;
+		float yd = yu * s;
+
+		translation->append(QVector2D(xd + xc, yd + yc));
+	}
+
+}
+
+
