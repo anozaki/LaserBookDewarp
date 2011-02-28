@@ -352,7 +352,7 @@
        <item>
         <widget class="QRadioButton" name="nnRadioButton">
          <property name="text">
-          <string>Nearest Neighbour</string>
+          <string>Nearest Neighbor</string>
          </property>
         </widget>
        </item>
