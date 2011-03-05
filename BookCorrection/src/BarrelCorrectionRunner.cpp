@@ -113,13 +113,48 @@ double cubicInterpolate (double a, double b, double c, double d, double x) {
 	return b + 0.5 * x*(c - a + x*(2.0*a - 5.0 * b + 4.0 * c - d + x*(3.0*(b - c) + d - a)));
 }
 
+double Fx(double x) {
+	if ( x > 0)
+		return x;
+
+	return 0;
+}
+
+double Rx(double x) {
+	return (pow(Fx(x + 2.0), 3) - 4 * pow(Fx(x + 1.0), 3) + 6 * pow(Fx(x), 3) - 4 * pow(Fx(x - 1.0), 3)) / 6;
+}
+
+// Paul Bourke's algorithm
+// Not working...
+double wikiProcessCubic(int data[4][4], double x, double y) {
+	double result = 0;
+
+	for(int i = 0; i < 3; i++) {
+		for(int j = 0; j < 3; j++) {
+			result += (double)data[i][j] * Rx((i - 1) - x) * Rx(y - (j - 1));
+		}
+	}
+
+	return result;
+}
+
 int processCubic(int data[4][4], double x, double y) {
 
 	double a = cubicInterpolate(data[0][0], data[0][1], data[0][2], data[0][3], x);
 	double b = cubicInterpolate(data[1][0], data[1][1], data[1][2], data[1][3], x);
 	double c = cubicInterpolate(data[2][0], data[2][1], data[2][2], data[2][3], x);
 	double d = cubicInterpolate(data[3][0], data[3][1], data[3][2], data[3][3], x);
-	return cubicInterpolate(a, b, c, d, y);
+	double e = cubicInterpolate(a, b, c, d, y);
+
+	if(e < 0) {
+		return 0;
+	}
+
+	if( e > 255) {
+		return 255;
+	}
+
+	return e;
 }
 
 QRgb BarrelCorrectionRunner::processCubicPixel(double x, double y) {
