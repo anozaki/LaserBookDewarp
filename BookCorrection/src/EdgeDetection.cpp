@@ -46,10 +46,11 @@ EdgeDetection::~EdgeDetection() {
 void EdgeDetection::process() {
 
 	QThreadPool threadPool;
+	threadPool.setMaxThreadCount(16);
 	int height = image.height();
 
 	for (int y = 0; y < height; y++) {
-		LaserDetectionRunner *runner = new LaserDetectionRunner(original);
+		LaserDetectionRunner *runner = new LaserDetectionRunner(&original);
 //		LaserDetectionHSVRunner *runner = new LaserDetectionHSVRunner(original);
 		runner->setScanLine((QRgb*)image.scanLine(y),y);
 		runner->setAutoDelete(true);

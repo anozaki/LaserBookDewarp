@@ -30,16 +30,16 @@
 
 #include "ConvolutionFilterRunner.h"
 
-ConvolutionFilterRunner::ConvolutionFilterRunner(QImage image) {
+ConvolutionFilterRunner::ConvolutionFilterRunner(const QImage *image) {
 	this->image = image;
 
-	width = image.width();
+	width = image->width();
 }
 
 ConvolutionFilterRunner::~ConvolutionFilterRunner() {
 }
 
-void ConvolutionFilterRunner::setMatrix(QList<float> &matrix, int radius) {
+void ConvolutionFilterRunner::setMatrix(const QList<float> &matrix, int radius) {
 	this->matrix = &matrix;
 	this->radius = radius;
 }
@@ -52,8 +52,8 @@ void ConvolutionFilterRunner::setScanLine(QRgb *scanLine, int workingY) {
 void ConvolutionFilterRunner::run() {
 	int size = radius * 2 + 1;
 
-	int w = image.width();
-	int h = image.height();
+	int w = image->width();
+	int h = image->height();
 
 	for (int x = 0; x < width; x++) {
 		scanLine[x] = processPixel(size, w, h, x, workingY);
@@ -73,7 +73,7 @@ QRgb ConvolutionFilterRunner::processPixel(int size, int w, int h, int x, int y)
 			continue;
 		}
 
-		QRgb *originalImage = (QRgb*) image.scanLine(y + offsetY);
+		QRgb *originalImage = (QRgb*) image->scanLine(y + offsetY);
 		for (int offsetX = 0; offsetX < size; offsetX++) {
 			if (offsetX + x >= w || offsetX + x < 0) {
 				continue;

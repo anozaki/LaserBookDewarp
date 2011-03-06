@@ -39,7 +39,7 @@ public:
 
 	void setImage(QImage image);
 
-	void process(QList<float> &matrix, int radius);
+	void process(const QList<float> &matrix, int radius);
 
 	QImage getImage();
 

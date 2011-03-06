@@ -47,13 +47,14 @@ void ConvolutionFilter::setImage(QImage image) {
 	this->processed = QImage(this->image);
 }
 
-void ConvolutionFilter::process(QList<float> &matrix, int radius) {
+void ConvolutionFilter::process(const QList<float> &matrix, int radius) {
 
 	QThreadPool threadPool;
+	threadPool.setMaxThreadCount(16);
 	int height = image.height();
 
 	for (int y = 0; y < height; y++) {
-		ConvolutionFilterRunner *runner = new ConvolutionFilterRunner(image);
+		ConvolutionFilterRunner *runner = new ConvolutionFilterRunner(&image);
 		runner->setMatrix(matrix, radius);
 		runner->setScanLine((QRgb *) processed.scanLine(y), y);
 		runner->setAutoDelete(true);
@@ -61,6 +62,7 @@ void ConvolutionFilter::process(QList<float> &matrix, int radius) {
 		threadPool.start(runner);
 	}
 
+	printf("waiting for convolution filter...");
 	threadPool.waitForDone();
 }
 

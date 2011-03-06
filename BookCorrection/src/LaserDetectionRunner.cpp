@@ -33,7 +33,7 @@
 #include "ScanLineData.h"
 #include "LaserDetectionRunner.h"
 
-LaserDetectionRunner::LaserDetectionRunner(QImage image) {
+LaserDetectionRunner::LaserDetectionRunner(const QImage *image) {
 	this->image = image;
 }
 
@@ -46,7 +46,7 @@ void LaserDetectionRunner::setScanLine(QRgb *scanLine, int workingY) {
 }
 
 void LaserDetectionRunner::run() {
-	int w = image.width();
+	int w = image->width();
 
 	bool leftFound = false;
 	int leftFoundGreen;
@@ -56,7 +56,7 @@ void LaserDetectionRunner::run() {
 	int rightFoundGreen;
 	int rightFoundX = 0;
 
-	const QRgb *originalScanLine = (const QRgb *) image.scanLine(workingY);
+	const QRgb *originalScanLine = (const QRgb *) image->scanLine(workingY);
 	for (int x = 0; x < w; x++) {
 		scanLine[x] = processPixel(x, originalScanLine);
 

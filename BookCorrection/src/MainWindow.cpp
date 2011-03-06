@@ -123,30 +123,37 @@ void MainWindow::openImage() {
 
 	// setting the location of the laser crossing point and its angle. (TODO did not verify the angle is calulated correctly).
 	table.setBaseDistance(QVector3D(0, 0, 1000), 45);
-	table.generate();
+	// table.generate();
 
+	printf("A\n");
 	QTransform myTransform;
 	myTransform.rotate(90);
 	QImage rotated = image.transformed(myTransform);
 
 	original = rotated;
 
+	printf("B\n");
 	ConvolutionFilter filter(rotated);
+	printf("B1\n");
 	QList<float> gMatrix = gaussianBlurKernel(3, 1);
+	printf("B2\n");
 	filter.process(gMatrix, 3);
-
+	printf("B3\n");
 	blurred = filter.getImage();
-
+	printf("C\n");
 	EdgeDetection edgeDetection(filter.getImage());
 	edgeDetection.process();
 
 	laser = edgeDetection.getImage();
-
+	printf("D\n");
 	myTransform.rotate(180);
 	original = original.transformed(myTransform);
+	printf("E\n");
 	blurred = blurred.transformed(myTransform);
+	printf("F\n");
 	laser = laser.transformed(myTransform);
-
+	printf("G\n");
 	showOriginal();
+	printf("H\n");
 }
 

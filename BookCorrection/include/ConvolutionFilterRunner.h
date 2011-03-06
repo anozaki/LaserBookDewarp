@@ -34,19 +34,19 @@
 
 class ConvolutionFilterRunner : public QRunnable {
 public:
-	ConvolutionFilterRunner(QImage image);
+	ConvolutionFilterRunner(const QImage *image);
 	virtual ~ConvolutionFilterRunner();
 
 	virtual void run();
 
-	void setMatrix(QList<float> &matrix, int radius);
+	void setMatrix(const QList<float> &matrix, int radius);
 
 	void setScanLine(QRgb *scanLine, int workingY);
 
 private:
-	QImage image;
+	const QImage *image;
 
-	QList<float> *matrix;
+	const QList<float> *matrix;
 	int radius;
 
 	QRgb *scanLine;

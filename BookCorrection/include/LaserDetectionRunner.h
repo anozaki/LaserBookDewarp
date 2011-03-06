@@ -37,7 +37,7 @@
 
 class LaserDetectionRunner: public QRunnable {
 public:
-	LaserDetectionRunner(QImage image);
+	LaserDetectionRunner(const QImage *image);
 	virtual ~LaserDetectionRunner();
 
 	virtual void run();
@@ -45,7 +45,7 @@ public:
 	void setScanLine(QRgb *scanLine, int workingY);
 
 private:
-	QImage image;
+	const QImage *image;
 
 	QRgb *scanLine;
 	int width;
